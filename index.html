@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PongJS</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript">
+
+      "use strict";
+
+      var Component = require('./js/Component');
+      var Scenario = require('./js/Scenario');
+
+    </script>
+  </head>
+  <body>
+    <div id="scenario">
+      <canvas id="player2" width="70" height="10"></canvas>
+      <canvas id="ball" width="16" height="16"></canvas>
+      <canvas id="player1" width="70" height="10"></canvas>
+    </div>
+    <div id="help">
+      <table style="width: 50%; margin: auto;">
+        <tr>
+          <td>
+            <b>Player 1</b>
+          </td>
+          <td>
+            <b>Player 2</b>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <ul>
+              <li>A: Left</li>
+              <li>D: Right</li>
+            </ul>
+          </td>
+          <td>
+            <li>H: Left</li>
+            <li>K: Right</li>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script type="text/javascript">
+
+      "use strict";
+
+      var p2 = document.getElementById('player2');
+      var b = document.getElementById('ball');
+      var p1 = document.getElementById('player1');
+
+      var p2Ctx = p2.getContext("2d");
+      p2Ctx.fillStyle = '#006699';
+      p2Ctx.fillRect(0, 0, 70, 10);
+
+      var ballCtx = b.getContext("2d");
+      ballCtx.beginPath();
+      ballCtx.arc(7.5, 7.5, 7.5, 0, 2*Math.PI, false);
+      ballCtx.fillStyle = '#999999';
+      ballCtx.fill();
+      ballCtx.strokeStyle = '#999999';
+      ballCtx.stroke();
+
+      var p1Ctx = p1.getContext("2d");
+      p1Ctx.fillStyle = '#006699';
+      p1Ctx.fillRect(0, 0, 70, 10);
+
+      var player1 = new Component();
+      player1.setId('player1');
+      player1.setX(115);
+      player1.setY(240);
+
+      var player2 = new Component();
+      player2.setId('player2');
+      player2.setX(115);
+      player2.setY(50);
+
+      var ball = new Component();
+      ball.setId('ball');
+      ball.setX(142);
+      ball.setY(142);
+
+      var scenario = new Scenario();
+      scenario.setId('scenario');
+      scenario.setBall(ball);
+      scenario.setPlayer1(player1);
+      scenario.setPlayer2(player2);
+
+      function controls(event){
+
+        if((event.keyCode == 97 || event.keyCode == 65) && scenario.getPlayer1().getX() > 0){
+
+          scenario.getPlayer1().setX(parseInt(scenario.getPlayer1().getX() - 5));
+          p1.style.marginLeft = scenario.getPlayer1().getX()+'px';
+
+        }else if((event.keyCode == 100 || event.keyCode == 68) && scenario.getPlayer1().getX() < 230){
+
+          scenario.getPlayer1().setX(parseInt(scenario.getPlayer1().getX() + 5));
+          p1.style.marginLeft = scenario.getPlayer1().getX()+'px';
+
+        }
+
+        if((event.keyCode == 104 || event.keyCode == 72) && scenario.getPlayer2().getX() > 0){
+
+          scenario.getPlayer2().setX(parseInt(scenario.getPlayer2().getX() - 5));
+          p2.style.marginLeft = scenario.getPlayer2().getX()+'px';
+
+        }else if((event.keyCode == 107 || event.keyCode == 75) && scenario.getPlayer2().getX() < 230){
+
+          scenario.getPlayer2().setX(parseInt(scenario.getPlayer2().getX() + 5));
+          p2.style.marginLeft = scenario.getPlayer2().getX()+'px';
+
+        }
+
+      }
+
+      document.body.onkeydown = controls;
+      scenario.run(b);
+
+    </script>
+  </body>
+</html>
